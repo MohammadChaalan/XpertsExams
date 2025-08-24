@@ -100,7 +100,7 @@ class SignUpView extends GetView<SignUpController> {
                             )),
                         const SizedBox(height: 20),
                         Obx(() => TextField(
-                              controller: controller.ConfirmPassword,
+                              controller: controller.confirmPassword,
                               obscureText:
                                   controller.isConfirmPasswordHidden.value,
                               decoration: InputDecoration(

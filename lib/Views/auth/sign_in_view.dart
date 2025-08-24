@@ -149,7 +149,7 @@ class SignInView extends GetView<SignInController> {
                             ),
                             onPressed: () {
                               // Handle sign in logic
-                              controller.Login();
+                              controller.login();
                             },
                             child: const Text('Sign in'),
                           ),
