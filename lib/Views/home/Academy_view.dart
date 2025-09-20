@@ -7,7 +7,6 @@ import 'package:xpertexams/Views/tracks/track_view.dart';
 class AcademyView extends StatelessWidget {
   AcademyView({super.key});
 
-  // Get the SignInController
   final SignInController signInController = Get.find<SignInController>();
 
   @override
@@ -19,7 +18,7 @@ class AcademyView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 1. Tracks
+            /// 1. Tracks
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -29,15 +28,15 @@ class AcademyView extends StatelessWidget {
                     SizedBox(width: 5),
                     Text(
                       "My Tracks",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
                 InkWell(
                   onTap: () {},
                   child: Container(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(30),
@@ -50,32 +49,29 @@ class AcademyView extends StatelessWidget {
             ),
             const SizedBox(height: 10),
 
-            // Show tracks from API
-            SizedBox(
-              height: 150,
-              child: Obx(() {
-                if (signInController.user.value != null &&
-                    signInController.user.value!.tracks != null &&
-                    signInController.user.value!.tracks!.isNotEmpty) {
-                  print(signInController.user.value!.tracks![0].name);
-                } else {
-                  print("No tracks available");
-                }
-
-                return ListView.builder(
-    scrollDirection: Axis.horizontal,
-    itemCount: signInController.user.value?.tracks?.length ?? 0,
-    itemBuilder: (context, index) {
-      final track = signInController.user.value!.tracks![index];
-      return _buildTrackCard(track, context);
-    },
-  );
-              }),
-            ),
+            /// Track List
+            Obx(() {
+              final tracks = signInController.user.value?.tracks ?? [];
+              if (tracks.isEmpty) {
+                return const Text("No tracks available");
+              }
+              return SizedBox(
+                height: 170,
+                child: ListView.builder(
+                  itemCount: tracks.length,
+                  scrollDirection: Axis.horizontal,
+                  physics: const ClampingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final track = tracks[index];
+                    return _buildTrackCard(track, context);
+                  },
+                ),
+              );
+            }),
 
             const SizedBox(height: 20),
 
-            // 2. Quick Actions
+            /// Quick Actions
             const Text(
               "Quick Actions",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -97,9 +93,10 @@ class AcademyView extends StatelessWidget {
                 _buildQuickAction(Icons.video_call, "Book Session"),
               ],
             ),
+
             const SizedBox(height: 20),
 
-            // 3. Scheduled Sessions
+            /// Scheduled Sessions
             const Row(
               children: [
                 Icon(Icons.schedule),
@@ -122,7 +119,7 @@ class AcademyView extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // 4. Documents & Certificates
+            /// Documents & Certificates
             const Text(
               "Documents & Certificates",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -132,8 +129,8 @@ class AcademyView extends StatelessWidget {
               children: [
                 _buildDocumentCard(
                   title: "Certificate of Completion",
-                  leading:
-                      const Icon(Icons.insert_drive_file, color: Colors.green),
+                  leading: const Icon(Icons.insert_drive_file,
+                      color: Colors.green),
                   subtitle: "PDF / Certificate",
                   buttonText: "Download",
                   onTrailingPressed: () {
@@ -162,53 +159,57 @@ class AcademyView extends StatelessWidget {
   }
 
   Widget _buildTrackCard(Track track, BuildContext context) {
-  return InkWell(
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => TrackCoursesView(track: track),
-        ),
-      );
-    },
-    child: Container(
-      width: 200,
-      margin: const EdgeInsets.only(right: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.green, width: 2),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => TrackCoursesView(track: track),
           ),
-        ],
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: Colors.green[100],
-              borderRadius: BorderRadius.circular(15),
+        );
+      },
+      child: Container(
+        width: 200,
+        margin: const EdgeInsets.only(right: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.green, width: 2),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
             ),
-            child: const Icon(Icons.phone_android_rounded),
-          ),
-          const SizedBox(height: 10),
-          Text(track.name, style: const TextStyle(fontSize: 15)),
-          const SizedBox(height: 10),
-          const Text("100% Complete", style: TextStyle(fontSize: 12)),
-        ],
-      ),
-    ),
-  );
-}
+          ],
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.green[100],
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: const Icon(Icons.play_lesson),
+            ),
+            const SizedBox(height: 10),
+            Text(track.name, style: const TextStyle(fontSize: 15)),
+            const SizedBox(height: 10),
+           const Text("Go to complete all the lessons" , 
+            style: TextStyle(fontSize: 12 , color: Colors.green , fontWeight: FontWeight.bold),
 
+            
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _buildQuickAction(IconData icon, String title) {
     return Container(
@@ -233,18 +234,19 @@ class AcademyView extends StatelessWidget {
             children: [
               Expanded(
                 child: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: Colors.green[100],
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Icon(icon, color: Colors.green, size: 28)),
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: Colors.green[100],
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Icon(icon, color: Colors.green, size: 28),
+                ),
               ),
               const SizedBox(height: 8),
               Text(
                 title,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 12),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -262,7 +264,8 @@ class AcademyView extends StatelessWidget {
         SizedBox(height: 15),
         Text(
           "No Upcoming Sessions",
-          style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+          style:
+              TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 10),
         Text(
@@ -290,10 +293,8 @@ class AcademyView extends StatelessWidget {
       elevation: 2,
       child: ListTile(
         leading: leading,
-        title: Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: Text(title,
+            style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(subtitle),
         trailing: TextButton(
           onPressed: onTrailingPressed,

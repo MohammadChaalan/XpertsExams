@@ -1,160 +1,162 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:xpertexams/Controllers/Auth/SignUp/SignUpController.dart';
-import 'package:xpertexams/Routes/AppRoute.dart';
 
-class SignUpView extends GetView<SignUpController> {
+class SignUpView extends StatefulWidget {
+  const SignUpView({super.key});
+
+  @override
+  State<SignUpView> createState() => _SignUpViewState();
+}
+
+class _SignUpViewState extends State<SignUpView> {
+  final controller = SignUpController();
+  List<dynamic> tracks = [];
+  List<int> selectedTrackIds = [];
+
+  @override
+  void initState() {
+    super.initState();
+    controller.fetchTracks().then((data) {
+      setState(() {
+        tracks = data;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green[400],
+      appBar: AppBar(title: const Text("Sign Up")),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 90, horizontal: 20),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                const Icon(
-                  Icons.account_circle,
-                  size: 100,
-                  color: Colors.white,
-                ),
-                const Text(
-                  'XpertTest',
-                  style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-                const Text(
-                  'Sign Up to your account',
-                  style: TextStyle(fontSize: 15, color: Colors.white),
-                ),
-                const SizedBox(height: 20),
-                Card(
-                  color: Colors.white,
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(25),
-                    child: Column(
-                      children: [
-                        TextField(
-                          controller: controller.name,
-                          decoration: InputDecoration(
-                            labelText: 'Name',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            prefixIcon: Icon(Icons.person_pin,
-                                color: Colors.green[400]),
-                          ),
-                          keyboardType: TextInputType.name,
-                        ),
-                        const SizedBox(height: 15),
-                        TextField(
-                          controller: controller.phone,
-                          decoration: InputDecoration(
-                              labelText: 'Phone',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              prefixIcon:
-                                  Icon(Icons.phone, color: Colors.green[400])),
-                          keyboardType: TextInputType.phone,
-                        ),
-                        const SizedBox(height: 15),
-                        TextField(
-                          controller: controller.email,
-                          decoration: InputDecoration(
-                              labelText: 'Email',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              prefixIcon: Icon(Icons.email_outlined,
-                                  color: Colors.green[400])),
-                          keyboardType: TextInputType.emailAddress,
-                        ),
-                        const SizedBox(height: 15),
-                        Obx(() => TextField(
-                              controller: controller.password,
-                              obscureText: controller.isPasswordHidden.value,
-                              decoration: InputDecoration(
-                                labelText: 'Password',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                prefixIcon: Icon(Icons.lock_outline,
-                                    color: Colors.green[400]),
-                                suffixIcon: IconButton(
-                                  icon: Icon(controller.isPasswordHidden.value
-                                      ? Icons.visibility_off
-                                      : Icons.visibility),
-                                  onPressed:
-                                      controller.togglePasswordVisibility,
-                                ),
-                              ),
-                            )),
-                        const SizedBox(height: 20),
-                        Obx(() => TextField(
-                              controller: controller.confirmPassword,
-                              obscureText:
-                                  controller.isConfirmPasswordHidden.value,
-                              decoration: InputDecoration(
-                                labelText: 'Confirm Password',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                prefixIcon: Icon(Icons.lock_outline,
-                                    color: Colors.green[400]),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                      controller.isConfirmPasswordHidden.value
-                                          ? Icons.visibility_off
-                                          : Icons.visibility),
-                                  onPressed: controller
-                                      .toggleConfirmPasswordVisibility,
-                                ),
-                              ),
-                            )),
-                        const SizedBox(height: 15),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green[300],
-                              foregroundColor: Colors.white,
-                            ),
-                            onPressed: () {
-                              controller.register();
-                            },
-                            child: const Text('Sign Up'),
-                          ),
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              foregroundColor: Colors.green[400],
-                            ),
-                            onPressed: () {
-                              // Handle sign in logic
-                              Get.toNamed(AppRoute.login);
-                            },
-                            child: const Text('Go To Sign In'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            TextField(
+              controller: controller.name,
+              decoration: const InputDecoration(
+                labelText: "Name",
+                prefixIcon: Icon(Icons.person),
+                border: OutlineInputBorder(),
+              ),
             ),
-          ),
+            const SizedBox(height: 15),
+
+            TextField(
+              controller: controller.email,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                labelText: "Email",
+                prefixIcon: Icon(Icons.email),
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 15),
+
+            TextField(
+              controller: controller.phone,
+              keyboardType: TextInputType.phone,
+              decoration: const InputDecoration(
+                labelText: "Phone",
+                prefixIcon: Icon(Icons.phone),
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 15),
+
+            // Password with toggle
+            TextField(
+              controller: controller.password,
+              obscureText: !controller.isPasswordVisible,
+              decoration: InputDecoration(
+                labelText: "Password",
+                prefixIcon: Icon(Icons.lock),
+                border: const OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    controller.isPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      controller.isPasswordVisible =
+                          !controller.isPasswordVisible;
+                    });
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(height: 15),
+
+            // Confirm Password
+            TextField(
+              controller: controller.confirmPassword,
+              obscureText: !controller.isConfirmPasswordVisible,
+              decoration: InputDecoration(
+                labelText: "Confirm Password",
+                prefixIcon: Icon(Icons.lock),
+                border: const OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    controller.isConfirmPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      controller.isConfirmPasswordVisible =
+                          !controller.isConfirmPasswordVisible;
+                    });
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Track selection
+            if (tracks.isNotEmpty)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Select Track(s):",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  ...tracks.map((track) {
+                    return CheckboxListTile(
+                      title: Text(track['name']),
+                      subtitle: Text(track['description']),
+                      value: selectedTrackIds.contains(track['id']),
+                      onChanged: (value) {
+                        setState(() {
+                          if (value == true) {
+                            selectedTrackIds.add(track['id']);
+                          } else {
+                            selectedTrackIds.remove(track['id']);
+                          }
+                        });
+                      },
+                    );
+                  }).toList(),
+                ],
+              ),
+
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: () =>
+                  controller.signup(selectedTrackIds, context),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 50),
+              ),
+              child: const Text("Sign Up"),
+            ),
+          ],
         ),
       ),
     );

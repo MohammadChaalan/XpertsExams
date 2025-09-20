@@ -1,7 +1,6 @@
 // home_controller.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xpertexams/Core/Network/DioClient.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
   // Observable variables

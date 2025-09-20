@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:xpertexams/Controllers/Auth/SignIn/SignInController.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -15,7 +18,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+   build(BuildContext context)  {
+        final signInController = Get.find<SignInController>();
+
     return AppBar(
       elevation: 4,
       backgroundColor: Colors.green[400],
@@ -53,7 +58,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           icon: const Icon(Icons.notifications, size: 26, color: Colors.white),
-          onPressed: onNotificationTap,
+          onPressed:  signInController.logout,
         ),
         const SizedBox(width: 8),
       ],

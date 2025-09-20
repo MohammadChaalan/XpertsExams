@@ -1,44 +1,65 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:xpertexams/Core/Network/DioClient.dart';
-import 'package:xpertexams/Models/User/UserModel.dart';
 
-class SignUpController extends GetxController {
-  TextEditingController name = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
-  TextEditingController confirmPassword = TextEditingController();
-  TextEditingController phone = TextEditingController();
+class SignUpController {
+  final Dio _dio = Dio(BaseOptions(baseUrl: "http://10.0.2.2:3000")); // emulator, change if real device
+  final name = TextEditingController();
+  final email = TextEditingController();
+  final password = TextEditingController();
+  final confirmPassword = TextEditingController();
+  final phone = TextEditingController();
 
-  var isPasswordHidden = true.obs;
-  var isConfirmPasswordHidden = true.obs;
+  bool isPasswordVisible = false;
+  bool isConfirmPasswordVisible = false;
 
-  void togglePasswordVisibility() => isPasswordHidden.value = !isPasswordHidden.value;
-  void toggleConfirmPasswordVisibility() => isConfirmPasswordHidden.value = !isConfirmPasswordHidden.value;
+  /// Fetch available tracks
+  Future<List<dynamic>> fetchTracks() async {
+    try {
+      final response = await _dio.get("/tracks");
+      return response.data['tracks'] ?? [];
+    } catch (e) {
+      debugPrint("Error fetching tracks: $e");
+      rethrow;
+    }
+  }
 
-  Future<void> register() async {
+  /// Signup method
+  Future<void> signup(List<int> selectedTrackIds, BuildContext context) async {
     if (password.text != confirmPassword.text) {
-      Get.snackbar("Error", "Passwords do not match",
-          backgroundColor: Colors.red, colorText: Colors.white);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Passwords do not match")),
+      );
       return;
     }
 
-    try {
-      User user = User(email: email.text, password: password.text, name: name.text);
-      var response =
-          await DioClient().getInstance().post("/signup", data: user.toJson());
+    final body = {
+      "name": name.text.trim(),
+      "email": email.text.trim(),
+      "password": password.text.trim(),
+      "phone": phone.text.trim(),
+      "selectedTrackIds": selectedTrackIds,
+    };
 
-      if (response.statusCode == 200) {
-        Get.snackbar("Success", "Registration completed!",
-            backgroundColor: Colors.green, colorText: Colors.white);
-      } else {
-        Get.snackbar("Error", "Registration failed",
-            backgroundColor: Colors.red, colorText: Colors.white);
-      }
-    } catch (e) {
-      print("Registration error: $e");
-      Get.snackbar("Error", "Unexpected error occurred",
-          backgroundColor: Colors.red, colorText: Colors.white);
+    try {
+      final response = await _dio.post("/signup", data: body);
+      debugPrint("Signup Response: ${response.data}");
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("✅ ${response.data['message']}")),
+      );
+    } on DioException catch (e) {
+      debugPrint("Signup Error: ${e.response?.data}");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("❌ ${e.response?.data['error']}")),
+      );
     }
+  }
+
+  void dispose() {
+    name.dispose();
+    email.dispose();
+    password.dispose();
+    confirmPassword.dispose();
+    phone.dispose();
   }
 }

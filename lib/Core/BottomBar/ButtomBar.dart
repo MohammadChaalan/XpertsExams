@@ -31,7 +31,7 @@ class _CustomBottomBarPageState extends State<CustomBottomBarPage> {
           _buildNavItem(Icons.home, 0, AppRoute.home , "Home"),
           _buildNavItem(Icons.play_circle, 1, "/video" , "Video"),
           _buildNavItem(Icons.business, 2, "/companies", "Companies"),
-          _buildNavItem(Icons.quiz, 3, AppRoute.courseSelection , "Test"),
+          _buildNavItem(Icons.quiz, 3, AppRoute.tracksContent , "Test"),
         ],
       ),
     );

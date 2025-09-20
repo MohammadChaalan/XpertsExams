@@ -1,56 +1,111 @@
-
-// home_view.dart
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:xpertexams/Controllers/Home/HomeController.dart';
 import 'package:xpertexams/Core/AppBar/HomeAppBar.dart';
 import 'package:xpertexams/Core/BottomBar/ButtomBar.dart';
 import 'package:xpertexams/Views/home/Academy_view.dart';
 
-class HomeView extends GetView<HomeController> {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
+  late PageController _pageController;
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+
+  int _selectedIndex = 0;
+  bool _isAnimationReady = false;
+
+  final List<TabData> tabs = [
+    TabData(title: "Academy", icon: Icons.school, color: Colors.green),
+    TabData(title: "Wallet", icon: Icons.account_balance_wallet, color: Colors.green),
+    TabData(title: "Jobs", icon: Icons.work, color: Colors.green),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+    _animationController.forward().then((_) {
+      setState(() {
+        _isAnimationReady = true;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _onButtonTap(int index) {
+    if (_selectedIndex == index) return;
+    setState(() {
+      _selectedIndex = index;
+    });
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 350),
+      curve: Curves.easeInOutCubic,
+    );
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: CustomAppBar(
+       appBar: CustomAppBar(
         title: "Welcome back, User",
         subtitle: "Ready to continue your learning journey?",
-        onMenuTap: controller.onMenuTap,
-        onNotificationTap: controller.onNotificationTap,
+        onMenuTap: () {
+          print("Menu tapped");
+        },
+        onNotificationTap: () {
+          print("Notification tapped");
+        },
       ),
-      body: Obx(() => controller.isAnimationReady.value
-          ? FadeTransition(
-              opacity: controller.fadeAnimation,
-              child: _buildMainContent(),
-              
-            )
-          : _buildMainContent()
+      body: Column(
+        children: [
+          _buildTabSection(),
+          Expanded(
+            child: PageView(
+              key: const PageStorageKey('home_pageview'),
+              controller: _pageController,
+              onPageChanged: _onPageChanged,
+              children:  [
+                AcademyView(), // no controller here
+                Center(child: Text("Wallet Page")),
+                Center(child: Text("Jobs Page")),
+              ],
+            ),
           ),
+        ],
+      ),
+          bottomNavigationBar: CustomBottomBarPage(),
 
-        bottomNavigationBar: CustomBottomBarPage(),
-
-
-
-
-    );
-    
-  }
-  
-
-  Widget _buildMainContent() {
-    return Column(
-      children: [
-        _buildTabSection(),
-        _buildPageView(),
-      ],
     );
   }
 
   Widget _buildTabSection() {
     return Container(
-      margin: const EdgeInsets.all(16.0),
+       margin: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(25),
@@ -63,157 +118,33 @@ class HomeView extends GetView<HomeController> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(6.0),
-        child: Obx(() => Row(
-          children: List.generate(controller.tabs.length, (index) {
-            final isSelected = controller.selectedIndex.value == index;
-            final tab = controller.tabs[index];
-            
+
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: List.generate(tabs.length, (index) {
+            final tab = tabs[index];
+            final isSelected = _selectedIndex == index;
             return Expanded(
-              child: _buildTabButton(index, tab, isSelected),
+              child: TextButton(
+                onPressed: () => _onButtonTap(index),
+                child: Text(tab.title, style: TextStyle(color: isSelected ? tab.color : Colors.grey)),
+              ),
             );
           }),
-        )),
-      ),
-    );
-  }
-
-  Widget _buildTabButton(int index, TabData tab, bool isSelected) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOutCubic,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => controller.onButtonTap(index),
-          borderRadius: BorderRadius.circular(20),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOutCubic,
-            padding: const EdgeInsets.symmetric(
-              vertical: 12,
-              horizontal: 8,
-            ),
-            decoration: BoxDecoration(
-              color: isSelected 
-                  ? tab.color.withOpacity(0.1)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(20),
-              border: isSelected
-                  ? Border.all(color: tab.color.withOpacity(0.3))
-                  : null,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOutCubic,
-                  padding: EdgeInsets.all(isSelected ? 6 : 4),
-                  decoration: BoxDecoration(
-                    color: isSelected 
-                        ? tab.color 
-                        : Colors.transparent,
-                    shape: BoxShape.circle,
-                  ),
-                  child: 
-                  isSelected ? 
-                  
-                  Icon(
-                    tab.icon,
-                    size: isSelected ? 18 : 18,
-                    color: isSelected 
-                        ? Colors.white 
-                        : Colors.grey,
-                  )
-                  :
-                  Row(
-                    children: [
-                      
-                       Icon(
-                    tab.icon,
-                    size: isSelected ? 18 : 18,
-                    color: isSelected 
-                        ? Colors.white 
-                        : Colors.grey,
-                  ),
-                  SizedBox(width: 10,),
-                  Text(tab.title,)
-                  
-                    ],
-                  ),
-                  
-                ),
-                if (isSelected) ...[
-                  const SizedBox(width: 6),
-                  AnimatedOpacity(
-                    duration: const Duration(milliseconds: 300),
-                    opacity: isSelected ? 1.0 : 0.0,
-                    child: Text(
-                      tab.title,
-                      style: Get.textTheme.labelLarge?.copyWith(
-                        color: tab.color,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
         ),
       ),
     );
   }
-
-  Widget _buildPageView() {
-    return Expanded(
-      child: PageView(
-        controller: controller.pageController,
-        onPageChanged: controller.onPageChanged,
-        children: [
-          _buildPageContent(
-            controller.tabs[0].title, 
-            controller.tabs[0].icon, 
-            controller.tabs[0].color
-          ),
-          _buildPageContent(
-            controller.tabs[1].title, 
-            controller.tabs[1].icon, 
-            controller.tabs[1].color
-          ),
-          _buildPageContent(
-            controller.tabs[2].title, 
-            controller.tabs[2].icon, 
-            controller.tabs[2].color
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPageContent(String title, IconData icon, Color color) {
-  switch (title.toLowerCase()) {
-    case "academy":
-      return  AcademyView();
-    case "wallet":
-      return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        child: const Center(child: Text("Wallet Page")),
-      );
-    case "jobs":
-      return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        child: const Center(child: Text("Jobs Page")),
-      );
-    default:
-      return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        child: const Center(child: Text("Page not found")),
-      );
-  }
 }
 
-}
+class TabData {
+  final String title;
+  final IconData icon;
+  final Color color;
 
+  const TabData({
+    required this.title,
+    required this.icon,
+    required this.color,
+  });
+}
