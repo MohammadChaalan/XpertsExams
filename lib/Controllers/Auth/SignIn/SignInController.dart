@@ -67,11 +67,14 @@ class SignInController extends GetxController {
       // Extract user data from response
       final userData = Map<String, dynamic>.from(responseData['user'] ?? {});
       final normalizedUser = _normalizeUserData(userData);
+user.value = User.fromJson(normalizedUser);
 
       // Save to SharedPreferences
       await prefs.setString(_tokenKey, token);
       await prefs.setString(_userKey, jsonEncode(normalizedUser));
-
+if (user.value?.id != null) {
+  await saveUserId(user.value!.id!);
+}
       // Update in-memory user
       user.value = User.fromJson(normalizedUser);
 
@@ -371,6 +374,31 @@ class SignInController extends GetxController {
       return [];
     }
   }
+// inside SignInController class
+
+static const String _userIdKey = 'user_id';
+
+/// Save user ID separately
+Future<void> saveUserId(int id) async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_userIdKey, id);
+    print("✅ User ID saved: $id");
+  } catch (e) {
+    print("❌ Error saving user ID: $e");
+  }
+}
+
+/// Get saved user ID
+Future<int?> getUserId() async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(_userIdKey);
+  } catch (e) {
+    print("❌ Error getting user ID: $e");
+    return null;
+  }
+}
 
   /// Get saved authentication token
   Future<String?> getAuthToken() async {

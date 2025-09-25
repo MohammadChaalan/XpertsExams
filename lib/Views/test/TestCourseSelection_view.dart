@@ -28,45 +28,56 @@ class _CourseSelectionViewState extends State<CourseSelectionView> {
     signInController = Get.find<SignInController>();
   }
 
-  void _onCourseSelected(String course) async {
-    try {
-      final questions = signInController.getQuestionsByCourse(course);
+ void _onCourseSelected(String course) async {
+  try {
+    final questions = signInController.getQuestionsByCourse(course);
 
-      if (questions.isEmpty) {
-        Get.snackbar(
-          "No Questions",
-          "This course doesn't have any questions available yet.",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.orange,
-          colorText: Colors.white,
-        );
-        return;
-      }
+    if (questions.isEmpty) {
+      Get.snackbar(
+        "No Questions",
+        "This course doesn't have any questions available yet.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.orange,
+        colorText: Colors.white,
+      );
+      return;
+    }
 
-      if (Get.isRegistered<TestController>()) {
-        Get.delete<TestController>(force: true);
-      }
+    if (Get.isRegistered<TestController>()) {
+      Get.delete<TestController>(force: true);
+    }
 
-      final testController = Get.put(TestController(), permanent: true);
+    final testController = Get.put(TestController(), permanent: true);
 
-      await Future.delayed(const Duration(milliseconds: 50));
-      testController.loadQuestions(course);
-
-      Get.toNamed(AppRoute.test, arguments: {
+    // Check if test result exists and is not empty
+    if (testController.lastResult.isNotEmpty) {
+      Get.toNamed(AppRoute.result, arguments: {
         "course": course,
         "track": widget.track,
         "exams": widget.exams,
+        "result": testController.lastResult,
       });
-    } catch (e) {
-      Get.snackbar(
-        "Error",
-        "Failed to load course: ${e.toString()}",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      return;
     }
+
+    await Future.delayed(const Duration(milliseconds: 50));
+    testController.loadQuestions(course);
+
+    Get.toNamed(AppRoute.test, arguments: {
+      "course": course,
+      "track": widget.track,
+      "exams": widget.exams,
+    });
+  } catch (e) {
+    Get.snackbar(
+      "Error",
+      "Failed to load course: ${e.toString()}",
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -74,16 +85,13 @@ class _CourseSelectionViewState extends State<CourseSelectionView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.track.name),
+        title: Text(widget.track.name , style: const TextStyle(color: Colors.white),),
         centerTitle: true,
         elevation: 0,
+        foregroundColor: Colors.white,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.green, Colors.teal],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+            color: Colors.green,
           ),
         ),
       ),
@@ -110,11 +118,11 @@ class _CourseSelectionViewState extends State<CourseSelectionView> {
                         end: Alignment.bottomRight,
                       ),
                       borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.black12,
                           blurRadius: 8,
-                          offset: const Offset(0, 4),
+                          offset: Offset(0, 4),
                         ),
                       ],
                     ),

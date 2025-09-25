@@ -4,11 +4,25 @@ import 'package:xpertexams/Controllers/Auth/SignIn/SignInController.dart';
 import 'package:xpertexams/Models/TrackModel.dart';
 import 'package:xpertexams/Views/tracks/track_view.dart';
 
-class AcademyView extends StatelessWidget {
+class AcademyView extends StatefulWidget {
   AcademyView({super.key});
 
-  final SignInController signInController = Get.find<SignInController>();
+  @override
+  State<AcademyView> createState() => _AcademyViewState();
+}
 
+class _AcademyViewState extends State<AcademyView> {
+  final SignInController signInController = Get.find<SignInController>();
+  // getToken() async {
+  //   FirebaseMessaging.instance.getToken().then((token) {
+  //     print("Firebase Messaging Token: $token");
+  //   });
+  // }
+  @override
+  void initState() {
+    super.initState();
+    // getToken();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,12 +99,12 @@ class AcademyView extends StatelessWidget {
               mainAxisSpacing: 12,
               crossAxisSpacing: 12,
               children: [
-                _buildQuickAction(Icons.history, "Checking History"),
-                _buildQuickAction(Icons.calendar_today, "View Tasks"),
-                _buildQuickAction(Icons.chat, "Chat"),
-                _buildQuickAction(Icons.announcement, "Announcements"),
-                _buildQuickAction(Icons.newspaper, "News"),
-                _buildQuickAction(Icons.video_call, "Book Session"),
+                _buildQuickAction(Icons.history, "Checking History",Colors.purple[100],Colors.purple),
+                _buildQuickAction(Icons.calendar_today, "View Tasks",Colors.red[100],Colors.red),
+                _buildQuickAction(Icons.chat, "Chat",Colors.blue[100],Colors.blue),
+                _buildQuickAction(Icons.announcement, "Announcements",Colors.orange[100],Colors.orange),
+                _buildQuickAction(Icons.newspaper, "News",Colors.green[100],Colors.green),
+                _buildQuickAction(Icons.video_call, "Book Session",Colors.yellow[100],Colors.yellow),
               ],
             ),
 
@@ -211,7 +225,7 @@ class AcademyView extends StatelessWidget {
     );
   }
 
-  Widget _buildQuickAction(IconData icon, String title) {
+  Widget _buildQuickAction(IconData icon, String title, colorsContainer ,colorsIcon) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -237,9 +251,9 @@ class AcademyView extends StatelessWidget {
                   width: 50,
                   height: 50,
                   decoration: BoxDecoration(
-                      color: Colors.green[100],
+                      color: colorsContainer,
                       borderRadius: BorderRadius.circular(15)),
-                  child: Icon(icon, color: Colors.green, size: 28),
+                  child: Icon(icon, color: colorsIcon, size: 28),
                 ),
               ),
               const SizedBox(height: 8),

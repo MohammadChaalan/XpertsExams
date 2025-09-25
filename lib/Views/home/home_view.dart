@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:xpertexams/Core/AppBar/HomeAppBar.dart';
 import 'package:xpertexams/Core/BottomBar/ButtomBar.dart';
+import 'package:xpertexams/Controllers/Auth/SignIn/SignInController.dart';
+import 'package:xpertexams/Routes/AppRoute.dart';
 import 'package:xpertexams/Views/home/Academy_view.dart';
+import 'package:xpertexams/Views/home/Jobs_view.dart';
+import 'package:xpertexams/Views/home/Wallet_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -12,15 +17,14 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   late PageController _pageController;
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
-
   int _selectedIndex = 0;
-  bool _isAnimationReady = false;
 
-  final List<TabData> tabs = [
+  final SignInController signInController = Get.find<SignInController>();
+
+  final List<TabData> tabs = const [
     TabData(title: "Academy", icon: Icons.school, color: Colors.green),
-    TabData(title: "Wallet", icon: Icons.account_balance_wallet, color: Colors.green),
+    TabData(
+        title: "Wallet", icon: Icons.account_balance_wallet, color: Colors.green),
     TabData(title: "Jobs", icon: Icons.work, color: Colors.green),
   ];
 
@@ -28,32 +32,17 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _pageController = PageController();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
-    _animationController.forward().then((_) {
-      setState(() {
-        _isAnimationReady = true;
-      });
-    });
   }
 
   @override
   void dispose() {
     _pageController.dispose();
-    _animationController.dispose();
     super.dispose();
   }
 
   void _onButtonTap(int index) {
     if (_selectedIndex == index) return;
-    setState(() {
-      _selectedIndex = index;
-    });
+    setState(() => _selectedIndex = index);
     _pageController.animateToPage(
       index,
       duration: const Duration(milliseconds: 350),
@@ -62,21 +51,75 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   }
 
   void _onPageChanged(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    setState(() => _selectedIndex = index);
+  }
+
+  void _showUserMenu() {
+    final user = signInController.user.value; // <- your logged-in user
+    final name = user?.name ?? "Guest User";
+    final email = user?.email ?? "guest@example.com";
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.green,
+                child: Icon(Icons.person, size: 50, color: Colors.white),
+              ),
+              const SizedBox(height: 12),
+              Text(name,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 4),
+              Text(email, style: const TextStyle(color: Colors.grey)),
+              const SizedBox(height: 24),
+              ListTile(
+                leading: const Icon(Icons.logout, color: Colors.red),
+                title: const Text("Logout",
+                    style: TextStyle(color: Colors.red)),
+                onTap: () async {
+                  Navigator.pop(context);
+
+                  // Call logout logic from controller
+                  await signInController.logout();
+
+                  Get.snackbar(
+                    "Logged Out",
+                    "You have successfully logged out",
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white,
+                  );
+
+                  // Navigate back to login screen
+                  Get.offAllNamed(AppRoute.login);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-       appBar: CustomAppBar(
-        title: "Welcome back, User",
+      appBar: CustomAppBar(
+        title: "Welcome back, ${signInController.user.value?.name ?? 'User'}",
         subtitle: "Ready to continue your learning journey?",
-        onMenuTap: () {
-          print("Menu tapped");
-        },
+        onMenuTap: _showUserMenu,
         onNotificationTap: () {
           print("Notification tapped");
         },
@@ -90,22 +133,21 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
               controller: _pageController,
               onPageChanged: _onPageChanged,
               children:  [
-                AcademyView(), // no controller here
-                Center(child: Text("Wallet Page")),
-                Center(child: Text("Jobs Page")),
+                AcademyView(),
+                WalletView(),
+               JobsView(),
               ],
             ),
           ),
         ],
       ),
-          bottomNavigationBar: CustomBottomBarPage(),
-
+      bottomNavigationBar: const CustomBottomBarPage(),
     );
   }
 
   Widget _buildTabSection() {
     return Container(
-       margin: const EdgeInsets.all(16.0),
+      margin: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(25),
@@ -117,21 +159,37 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           ),
         ],
       ),
-      child: Padding(
-
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: List.generate(tabs.length, (index) {
-            final tab = tabs[index];
-            final isSelected = _selectedIndex == index;
-            return Expanded(
-              child: TextButton(
-                onPressed: () => _onButtonTap(index),
-                child: Text(tab.title, style: TextStyle(color: isSelected ? tab.color : Colors.grey)),
+      child: Row(
+        children: List.generate(tabs.length, (index) {
+          final tab = tabs[index];
+          final isSelected = _selectedIndex == index;
+          return Expanded(
+            child: TextButton(
+              onPressed: () => _onButtonTap(index),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(tab.icon, color: isSelected ? tab.color : Colors.grey),
+                  const SizedBox(height: 4),
+                  Text(tab.title,
+                      style: TextStyle(
+                          color: isSelected ? tab.color : Colors.grey,
+                          fontWeight: FontWeight.bold)),
+                  if (isSelected)
+                    Container(
+                      margin: const EdgeInsets.only(top: 4),
+                      height: 3,
+                      width: 24,
+                      decoration: BoxDecoration(
+                        color: tab.color,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                ],
               ),
-            );
-          }),
-        ),
+            ),
+          );
+        }),
       ),
     );
   }

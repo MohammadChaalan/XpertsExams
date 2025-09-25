@@ -21,6 +21,9 @@ class SignInView extends GetView<SignInController> {
                   size: 100,
                   color: Colors.white,
                 ),
+                TextButton(onPressed: () {
+                  Get.toNamed(AppRoute.demoOffline);
+                }, child: const Text('offline')),
                 const Text(
                   'Welcome Back',
                   style: TextStyle(

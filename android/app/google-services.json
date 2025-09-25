@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "896084198362",
+    "project_id": "xpertexamsapp",
+    "storage_bucket": "xpertexamsapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:896084198362:android:a4400fd66f56d8915036e3",
+        "android_client_info": {
+          "package_name": "com.example.xpertexams"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEnb3e5mC2pNtZg5vClW9K_4FKdtqyx0Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

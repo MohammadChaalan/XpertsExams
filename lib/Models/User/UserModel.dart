@@ -33,4 +33,6 @@ class User {
       };
 
   String toJson() => jsonEncode(toMap());
+  
 }
+

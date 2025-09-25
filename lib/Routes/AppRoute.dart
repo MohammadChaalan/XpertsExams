@@ -7,9 +7,12 @@ class AppRoute {
   static const String splash = '/splash';
   static const String result = '/result';
   static const String track = '/track';
+  static const String demoOffline = '/demo-offline';
+  static const String completeVideo= "/complete-video";
+  static const String notifications = "/notifications";
 
-static const String tracksContent = "/tracks-content";
-
+  static const String videoContent = "/video-content";
+  static const String tracksContent = "/tracks-content";
 
 
 }

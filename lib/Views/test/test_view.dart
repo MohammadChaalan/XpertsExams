@@ -73,7 +73,7 @@ class _TestViewState extends State<TestView> {
 
 void _onTimeUp() {
   if (controller != null) {
-    controller!.submit(auto: true); // Auto-submit test and go to ResultView
+    controller!.submitTest(); // Auto-submit test and go to ResultView
   }
 }
 
@@ -167,7 +167,7 @@ void _onTimeUp() {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.green),
                 ),
-                onPressed: controller!.questions.isEmpty ? null : () => controller!.submit(),
+                onPressed: controller!.questions.isEmpty ? null : () => controller!.submitTest(),
                 child: Text(
                     "Submit Test (${controller!.selectedAnswers.length}/${controller!.questions.length})" ,
                     style: const TextStyle(color: Colors.white),

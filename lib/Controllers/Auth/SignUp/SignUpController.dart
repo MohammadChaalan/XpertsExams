@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:xpertexams/Core/Network/DioClient.dart';
+import 'package:xpertexams/Routes/AppRoute.dart';
 
 class SignUpController {
-  final Dio _dio = Dio(BaseOptions(baseUrl: "http://10.0.2.2:3000")); // emulator, change if real device
   final name = TextEditingController();
   final email = TextEditingController();
   final password = TextEditingController();
@@ -15,7 +17,7 @@ class SignUpController {
   /// Fetch available tracks
   Future<List<dynamic>> fetchTracks() async {
     try {
-      final response = await _dio.get("/tracks");
+      final response = await DioClient().getInstance().get("/tracks");
       return response.data['tracks'] ?? [];
     } catch (e) {
       debugPrint("Error fetching tracks: $e");
@@ -41,9 +43,11 @@ class SignUpController {
     };
 
     try {
-      final response = await _dio.post("/signup", data: body);
+      final response = await DioClient().getInstance().post("/signup", data: body);
       debugPrint("Signup Response: ${response.data}");
-
+      // Navigate to offline demo immediately after signup
+      Get.offNamed(AppRoute.demoOffline);
+   
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("✅ ${response.data['message']}")),
       );
