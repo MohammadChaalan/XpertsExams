@@ -3,14 +3,17 @@ import 'package:get/get.dart';
 import 'package:xpertexams/Routes/AppRoute.dart';
 
 class CustomBottomBarPage extends StatefulWidget {
-  const CustomBottomBarPage({super.key});
+  final int initialIndex; // <-- Add initial index
+
+  const CustomBottomBarPage({super.key, this.initialIndex = 0});
 
   @override
   State<CustomBottomBarPage> createState() => _CustomBottomBarPageState();
 }
 
-class _CustomBottomBarPageState extends State<CustomBottomBarPage> with SingleTickerProviderStateMixin {
-  int _selectedIndex = 0;
+class _CustomBottomBarPageState extends State<CustomBottomBarPage>
+    with SingleTickerProviderStateMixin {
+  late int _selectedIndex;
 
   final List<_NavItem> _navItems = [
     _NavItem(icon: Icons.home, label: "Home", route: AppRoute.home),
@@ -19,12 +22,17 @@ class _CustomBottomBarPageState extends State<CustomBottomBarPage> with SingleTi
     _NavItem(icon: Icons.quiz, label: "Test", route: AppRoute.tracksContent),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex;
+  }
+
   void _onItemTapped(int index) {
     if (_selectedIndex == index) return;
     setState(() => _selectedIndex = index);
 
-    // Navigate to the route
-    Get.offNamed(_navItems[index].route); // Use offNamed to avoid stacking pages
+    Get.offNamed(_navItems[index].route);
   }
 
   @override
@@ -55,12 +63,12 @@ class _CustomBottomBarPageState extends State<CustomBottomBarPage> with SingleTi
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 250),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: isSelected
-                  ? BoxDecoration(
-                      color: Colors.green.withOpacity(0.15),
+              decoration: 
+                   BoxDecoration(
+                      color: Colors.white.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(12),
                     )
-                  : null,
+                  ,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

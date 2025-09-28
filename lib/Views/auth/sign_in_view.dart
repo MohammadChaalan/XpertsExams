@@ -21,9 +21,6 @@ class SignInView extends GetView<SignInController> {
                   size: 100,
                   color: Colors.white,
                 ),
-                TextButton(onPressed: () {
-                  Get.toNamed(AppRoute.demoOffline);
-                }, child: const Text('offline')),
                 const Text(
                   'Welcome Back',
                   style: TextStyle(
@@ -53,7 +50,8 @@ class SignInView extends GetView<SignInController> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              prefixIcon: Icon(Icons.email_outlined , color: Colors.green[400])),
+                              prefixIcon: Icon(Icons.email_outlined,
+                                  color: Colors.green[400])),
                           keyboardType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 15),
@@ -65,7 +63,8 @@ class SignInView extends GetView<SignInController> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              prefixIcon: Icon(Icons.lock_outline , color: Colors.green[400])),
+                              prefixIcon: Icon(Icons.lock_outline,
+                                  color: Colors.green[400])),
                         ),
                         const SizedBox(height: 20),
                         Obx(() => controller.isChecked.value
@@ -86,8 +85,7 @@ class SignInView extends GetView<SignInController> {
                                         style: TextStyle(
                                             color: Colors.green[300])),
                                     InkWell(
-                                      onTap: () {
-                                      },
+                                      onTap: () {},
                                       child: const Text('Terms and Conditions',
                                           style: TextStyle(
                                               decoration:
@@ -116,8 +114,7 @@ class SignInView extends GetView<SignInController> {
                                             style: TextStyle(
                                                 color: Colors.orange[300])),
                                         InkWell(
-                                          onTap: () {
-                                          },
+                                          onTap: () {},
                                           child: const Text(
                                               'Terms and Conditions',
                                               style: TextStyle(

@@ -15,8 +15,8 @@ class CourseSelectionController extends GetxController {
   }
 
   void loadCourses() {
-    courses.value = signInController.user.value!.tracks!
-        .expand((track) => track.courses!)
+    courses.value = signInController.user.value!.tracks
+        .expand((track) => track.courses)
         .toList();
   }
 }

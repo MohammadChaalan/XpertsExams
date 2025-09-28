@@ -2,14 +2,14 @@ import 'VideoModel.dart';
 import 'ExamModel.dart';
 
 class Course {
-  final int id;
+  final int? id;
   final String title;
   final String? description; // <-- add this
   final List<Video> video;
   final List<Exam> exams;
 
   Course({
-    required this.id,
+    this.id,
     required this.title,
     this.description,
     required this.video,
@@ -18,7 +18,7 @@ class Course {
 
   factory Course.fromJson(Map<String, dynamic> json) {
     return Course(
-      id: int.parse(json['id'].toString()),
+      id: json['id'] != null ? int.tryParse(json['id'].toString()) : null,
       title: json['title'] ?? '',
       description: json['description'], // <-- parse description
       video: (json['videos'] as List? ?? [])

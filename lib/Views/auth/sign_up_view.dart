@@ -76,8 +76,8 @@ class _SignUpViewState extends State<SignUpView> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              prefixIcon: Icon(Icons.person,
-                                  color: Colors.green[400])),
+                              prefixIcon:
+                                  Icon(Icons.person, color: Colors.green[400])),
                         ),
                         const SizedBox(height: 15),
                         TextField(
@@ -100,8 +100,8 @@ class _SignUpViewState extends State<SignUpView> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              prefixIcon: Icon(Icons.phone,
-                                  color: Colors.green[400])),
+                              prefixIcon:
+                                  Icon(Icons.phone, color: Colors.green[400])),
                         ),
                         const SizedBox(height: 15),
                         TextField(
@@ -172,8 +172,7 @@ class _SignUpViewState extends State<SignUpView> {
                                   title: Text(track['name']),
                                   subtitle: Text(track['description']),
                                   activeColor: Colors.green[400],
-                                  value:
-                                      selectedTrackIds.contains(track['id']),
+                                  value: selectedTrackIds.contains(track['id']),
                                   onChanged: (value) {
                                     setState(() {
                                       if (value == true) {
@@ -214,7 +213,8 @@ class _SignUpViewState extends State<SignUpView> {
                             onPressed: () {
                               Get.toNamed(AppRoute.login);
                             },
-                            child: const Text('Already have an account? Sign In'),
+                            child:
+                                const Text('Already have an account? Sign In'),
                           ),
                         ),
                       ],

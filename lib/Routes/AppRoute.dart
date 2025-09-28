@@ -10,7 +10,8 @@ class AppRoute {
   static const String demoOffline = '/demo-offline';
   static const String completeVideo= "/complete-video";
   static const String notifications = "/notifications";
-
+  static const String companies = "/companies";
+  static const String companyDetails = "/company-details";
   static const String videoContent = "/video-content";
   static const String tracksContent = "/tracks-content";
 

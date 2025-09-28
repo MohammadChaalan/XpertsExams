@@ -18,7 +18,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'],
+      id: json['id'] != null ? int.tryParse(json['id'].toString()) : null,
       name: json['name'],
       email: json['email'] ?? '',
       password: '', // don't send back from API

@@ -12,7 +12,7 @@ class SignInController extends GetxController {
   // Form controllers
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
-  
+
   // Observable variables
   final RxBool isChecked = false.obs;
   final RxBool isLoading = false.obs;
@@ -49,7 +49,8 @@ class SignInController extends GetxController {
       if (token != null && userData != null && userData.isNotEmpty) {
         final data = jsonDecode(userData) as Map<String, dynamic>;
         user.value = User.fromJson(_normalizeUserData(data));
-        print("✅ User restored: ${user.value!.email}, Tracks: ${user.value!.tracks?.length ?? 0}");
+        print(
+            "✅ User restored: ${user.value!.email}, Tracks: ${user.value!.tracks?.length ?? 0}");
       } else {
         print("⚠️ No saved user data found");
       }
@@ -60,25 +61,27 @@ class SignInController extends GetxController {
   }
 
   /// Save authentication data
-  Future<void> saveAuthData(String token, Map<String, dynamic> responseData) async {
+  Future<void> saveAuthData(
+      String token, Map<String, dynamic> responseData) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      
+
       // Extract user data from response
       final userData = Map<String, dynamic>.from(responseData['user'] ?? {});
       final normalizedUser = _normalizeUserData(userData);
-user.value = User.fromJson(normalizedUser);
+      user.value = User.fromJson(normalizedUser);
 
       // Save to SharedPreferences
       await prefs.setString(_tokenKey, token);
       await prefs.setString(_userKey, jsonEncode(normalizedUser));
-if (user.value?.id != null) {
-  await saveUserId(user.value!.id!);
-}
+      if (user.value?.id != null) {
+        await saveUserId(user.value!.id!);
+      }
       // Update in-memory user
       user.value = User.fromJson(normalizedUser);
 
-      print("✅ Auth data saved - User: ${user.value!.email}, Tracks: ${normalizedUser['tracks']?.length ?? 0}");
+      print(
+          "✅ Auth data saved - User: ${user.value!.email}, Tracks: ${normalizedUser['tracks']?.length ?? 0}");
     } catch (e) {
       print("❌ Error saving auth data: $e");
       rethrow;
@@ -103,12 +106,12 @@ if (user.value?.id != null) {
     try {
       isLoading.value = true;
       await clearAuthData();
-      
+
       // Clear form data
       email.clear();
       password.clear();
       isChecked.value = false;
-      
+
       Get.offAllNamed(AppRoute.login);
     } catch (e) {
       print("❌ Error during logout: $e");
@@ -142,27 +145,27 @@ if (user.value?.id != null) {
 
     try {
       isLoading.value = true;
-      
+
       // Create user object for login
       final loginUser = User(email: email.text.trim(), password: password.text);
-      
+
       // Make API call
       final response = await DioClient().getInstance().post(
-        "/login", 
-        data: loginUser.toJson(),
-      );
+            "/login",
+            data: loginUser.toJson(),
+          );
 
       if (response.statusCode == 200) {
         // Parse response data
-        final responseData = response.data is String 
-          ? jsonDecode(response.data) as Map<String, dynamic>
-          : Map<String, dynamic>.from(response.data);
+        final responseData = response.data is String
+            ? jsonDecode(response.data) as Map<String, dynamic>
+            : Map<String, dynamic>.from(response.data);
 
         // Extract token
-        final token = responseData['token'] ?? 
-                     responseData['access_token'] ?? 
-                     responseData['authToken'];
-        
+        final token = responseData['token'] ??
+            responseData['access_token'] ??
+            responseData['authToken'];
+
         if (token == null || token.toString().isEmpty) {
           throw Exception("No authentication token received");
         }
@@ -171,10 +174,10 @@ if (user.value?.id != null) {
         await saveAuthData(token.toString(), responseData);
 
         print("✅ Login successful for: ${user.value!.email}");
-        
+
         // Navigate to home
         Get.offAllNamed(AppRoute.home, arguments: responseData);
-        
+
         // Show success message
         Get.snackbar(
           "Success",
@@ -182,20 +185,19 @@ if (user.value?.id != null) {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-        
       } else {
         throw Exception("Login failed with status: ${response.statusCode}");
       }
     } catch (e) {
       print("❌ Login error: $e");
-      
+
       String errorMessage = "Login failed";
       if (e.toString().contains("401")) {
         errorMessage = "Invalid email or password";
       } else if (e.toString().contains("network")) {
         errorMessage = "Network error. Please check your connection";
       }
-      
+
       Get.snackbar(
         "Error",
         errorMessage,
@@ -211,38 +213,32 @@ if (user.value?.id != null) {
   Map<String, dynamic> _normalizeUserData(Map<String, dynamic> userData) {
     try {
       final normalized = Map<String, dynamic>.from(userData);
-      
+
       // Ensure tracks is a proper list
-      normalized['tracks'] = (normalized['tracks'] as List? ?? [])
-          .map((track) {
-            final t = Map<String, dynamic>.from(track ?? {});
-            
-            // Ensure courses is a proper list
-            t['courses'] = (t['courses'] as List? ?? [])
-                .map((course) {
-                  final c = Map<String, dynamic>.from(course ?? {});
-                  
-                  // Ensure exams is a proper list
-                  c['exams'] = (c['exams'] as List? ?? [])
-                      .map((exam) {
-                        final e = Map<String, dynamic>.from(exam ?? {});
-                        
-                        // Ensure questions is a proper list
-                        e['questions'] = (e['questions'] as List? ?? [])
-                            .map((question) => Map<String, dynamic>.from(question ?? {}))
-                            .toList();
-                        
-                        return e;
-                      })
-                      .toList();
-                  
-                  return c;
-                })
+      normalized['tracks'] = (normalized['tracks'] as List? ?? []).map((track) {
+        final t = Map<String, dynamic>.from(track ?? {});
+
+        // Ensure courses is a proper list
+        t['courses'] = (t['courses'] as List? ?? []).map((course) {
+          final c = Map<String, dynamic>.from(course ?? {});
+
+          // Ensure exams is a proper list
+          c['exams'] = (c['exams'] as List? ?? []).map((exam) {
+            final e = Map<String, dynamic>.from(exam ?? {});
+
+            // Ensure questions is a proper list
+            e['questions'] = (e['questions'] as List? ?? [])
+                .map((question) => Map<String, dynamic>.from(question ?? {}))
                 .toList();
-            
-            return t;
-          })
-          .toList();
+
+            return e;
+          }).toList();
+
+          return c;
+        }).toList();
+
+        return t;
+      }).toList();
 
       return normalized;
     } catch (e) {
@@ -264,7 +260,7 @@ if (user.value?.id != null) {
       }
 
       final courseNames = <String>{};
-      
+
       for (final track in currentUser.tracks ?? []) {
         for (final course in track.courses ?? []) {
           final title = course.title?.toString().trim();
@@ -273,10 +269,11 @@ if (user.value?.id != null) {
           }
         }
       }
-      
+
       final sortedCourses = courseNames.toList()..sort();
-      print("📚 Found ${sortedCourses.length} courses: ${sortedCourses.join(', ')}");
-      
+      print(
+          "📚 Found ${sortedCourses.length} courses: ${sortedCourses.join(', ')}");
+
       return sortedCourses;
     } catch (e) {
       print("❌ Error getting courses: $e");
@@ -305,7 +302,7 @@ if (user.value?.id != null) {
       for (final track in currentUser.tracks ?? []) {
         for (final course in track.courses ?? []) {
           final courseName = (course.title ?? '').toLowerCase().trim();
-          
+
           if (courseName == targetCourse) {
             for (final exam in course.exams ?? []) {
               for (final questionData in exam.questions ?? []) {
@@ -317,20 +314,22 @@ if (user.value?.id != null) {
                   }
 
                   // Parse from Map
-                  final questionMap = Map<String, dynamic>.from(questionData ?? {});
-                  
-                  final id = int.tryParse(questionMap['id']?.toString() ?? '') ?? 
-                           questionMap.hashCode;
-                  
-                  final questionText = (questionMap['question'] ??
-                                     questionMap['title'] ??
-                                     questionMap['text'] ??
-                                     'Question text not available').toString();
+                  final questionMap =
+                      Map<String, dynamic>.from(questionData ?? {});
 
-                  final rawOptions = questionMap['options'] ?? 
-                                   questionMap['choices'] ?? 
-                                   [];
-                  
+                  final id =
+                      int.tryParse(questionMap['id']?.toString() ?? '') ??
+                          questionMap.hashCode;
+
+                  final questionText = (questionMap['question'] ??
+                          questionMap['title'] ??
+                          questionMap['text'] ??
+                          'Question text not available')
+                      .toString();
+
+                  final rawOptions =
+                      questionMap['options'] ?? questionMap['choices'] ?? [];
+
                   final options = <String>[];
                   if (rawOptions is List) {
                     for (final option in rawOptions) {
@@ -342,13 +341,15 @@ if (user.value?.id != null) {
                   }
 
                   final correctAnswer = (questionMap['answer'] ??
-                                      questionMap['correct'] ??
-                                      questionMap['correct_answer'] ??
-                                      '').toString().trim();
+                          questionMap['correct'] ??
+                          questionMap['correct_answer'] ??
+                          '')
+                      .toString()
+                      .trim();
 
                   // Only add question if it has valid data
-                  if (questionText.isNotEmpty && 
-                      options.isNotEmpty && 
+                  if (questionText.isNotEmpty &&
+                      options.isNotEmpty &&
                       correctAnswer.isNotEmpty) {
                     questions.add(Question(
                       id: id,
@@ -367,7 +368,8 @@ if (user.value?.id != null) {
         }
       }
 
-      print("📝 getQuestionsByCourse('$courseTitle'): Found ${questions.length} questions");
+      print(
+          "📝 getQuestionsByCourse('$courseTitle'): Found ${questions.length} questions");
       return questions;
     } catch (e) {
       print("❌ Error getting questions for course '$courseTitle': $e");
@@ -376,29 +378,29 @@ if (user.value?.id != null) {
   }
 // inside SignInController class
 
-static const String _userIdKey = 'user_id';
+  static const String _userIdKey = 'user_id';
 
-/// Save user ID separately
-Future<void> saveUserId(int id) async {
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_userIdKey, id);
-    print("✅ User ID saved: $id");
-  } catch (e) {
-    print("❌ Error saving user ID: $e");
+  /// Save user ID separately
+  Future<void> saveUserId(int id) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt(_userIdKey, id);
+      print("✅ User ID saved: $id");
+    } catch (e) {
+      print("❌ Error saving user ID: $e");
+    }
   }
-}
 
-/// Get saved user ID
-Future<int?> getUserId() async {
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(_userIdKey);
-  } catch (e) {
-    print("❌ Error getting user ID: $e");
-    return null;
+  /// Get saved user ID
+  Future<int?> getUserId() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getInt(_userIdKey);
+    } catch (e) {
+      print("❌ Error getting user ID: $e");
+      return null;
+    }
   }
-}
 
   /// Get saved authentication token
   Future<String?> getAuthToken() async {
@@ -410,86 +412,89 @@ Future<int?> getUserId() async {
       return null;
     }
   }
-/// Get all available tracks for the current user
-List<Track> getTracks() {
-  try {
-    final currentUser = user.value;
-    if (currentUser == null) {
-      print("⚠️ getTracks(): No user loaded");
+
+  /// Get all available tracks for the current user
+  List<Track> getTracks() {
+    try {
+      final currentUser = user.value;
+      if (currentUser == null) {
+        print("⚠️ getTracks(): No user loaded");
+        return [];
+      }
+
+      final userTracks = <Track>[];
+
+      for (final trackData in currentUser.tracks ?? []) {
+        try {
+          // Convert track data to Track object
+          final trackMap = trackData.toJson();
+          final track = Track.fromJson(trackMap);
+          userTracks.add(track);
+        } catch (trackError) {
+          print("❌ Error parsing track: $trackError");
+          continue;
+        }
+      }
+
+      print(
+          "Found ${userTracks.length} tracks for user: ${userTracks.map((t) => t.name).join(', ')}");
+
+      return userTracks;
+    } catch (e) {
+      print("❌ Error getting tracks: $e");
       return [];
     }
-
-    final userTracks = <Track>[];
-    
-    for (final trackData in currentUser.tracks ?? []) {
-      try {
-        // Convert track data to Track object
-        final trackMap = trackData.toJson();
-        final track = Track.fromJson(trackMap);
-        userTracks.add(track);
-      } catch (trackError) {
-        print("❌ Error parsing track: $trackError");
-        continue;
-      }
-    }
-    
-    print("🎯 Found ${userTracks.length} tracks for user: ${userTracks.map((t) => t.name).join(', ')}");
-    
-    return userTracks;
-  } catch (e) {
-    print("❌ Error getting tracks: $e");
-    return [];
   }
-}
 
-/// Get track statistics
-Map<String, int> getTrackStats() {
-  try {
-    final tracks = getTracks();
-    int totalCourses = 0;
-    int totalVideos = 0;
-    int totalExams = 0;
-    
-    for (final track in tracks) {
-      totalCourses += track.courses.length;
-      for (final course in track.courses) {
-        totalVideos += course.video.length;
-        totalExams += course.exams?.length ?? 0;
-      }
-    }
-    
-    return {
-      'tracks': tracks.length,
-      'courses': totalCourses,
-      'videos': totalVideos,
-      'exams': totalExams,
-    };
-  } catch (e) {
-    print("❌ Error getting track stats: $e");
-    return {
-      'tracks': 0,
-      'courses': 0,
-      'videos': 0,
-      'exams': 0,
-    };
-  }
-}
+  /// Get track statistics
+  Map<String, int> getTrackStats() {
+    try {
+      final tracks = getTracks();
+      int totalCourses = 0;
+      int totalVideos = 0;
+      int totalExams = 0;
 
-/// Get a specific track by name
-Track? getTrackByName(String trackName) {
-  try {
-    final tracks = getTracks();
-    for (final track in tracks) {
-      if (track.name.toLowerCase().trim() == trackName.toLowerCase().trim()) {
-        return track;
+      for (final track in tracks) {
+        totalCourses += track.courses.length;
+        for (final course in track.courses) {
+          totalVideos += course.video.length;
+          totalExams += course.exams?.length ?? 0;
+        }
       }
+
+      return {
+        'tracks': tracks.length,
+        'courses': totalCourses,
+        'videos': totalVideos,
+        'exams': totalExams,
+      };
+    } catch (e) {
+      print("❌ Error getting track stats: $e");
+      return {
+        'tracks': 0,
+        'courses': 0,
+        'videos': 0,
+        'exams': 0,
+      };
     }
-    return null;
-  } catch (e) {
-    print("❌ Error getting track by name '$trackName': $e");
-    return null;
   }
-}
+
+  /// Get a specific track by name
+  Track? getTrackByName(String trackName) {
+    try {
+      final tracks = getTracks();
+      for (final track in tracks) {
+        if (track.name.toLowerCase().trim() == trackName.toLowerCase().trim()) {
+          return track;
+        }
+      }
+      return null;
+    } catch (e) {
+      print("❌ Error getting track by name '$trackName': $e");
+      return null;
+    }
+  }
+
   /// Check if user is authenticated
   bool get isAuthenticated => user.value != null;
 

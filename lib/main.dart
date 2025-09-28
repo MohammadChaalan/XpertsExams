@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:xpertexams/Bindings/Auth/SignInBindings.dart';
 import 'package:xpertexams/Bindings/Auth/SignUpBindings.dart';
@@ -12,9 +11,9 @@ import 'package:xpertexams/Bindings/Test/TestBindings.dart';
 import 'package:xpertexams/Controllers/Auth/SignIn/SignInController.dart';
 import 'package:xpertexams/Controllers/Test/TestController.dart';
 import 'package:xpertexams/Routes/AppRoute.dart';
-import 'package:xpertexams/Views/Demo/home_offline_view.dart';
 import 'package:xpertexams/Views/Splash/Splash_view.dart';
 import 'package:xpertexams/Views/auth/sign_up_view.dart';
+import 'package:xpertexams/Views/companies/company_view.dart';
 import 'package:xpertexams/Views/home/home_view.dart';
 import 'package:xpertexams/Views/notifications/notifications_view.dart';
 import 'package:xpertexams/Views/test/TestCourseSelection_view.dart';
@@ -30,6 +29,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(SignInController());
   Get.put(TestController());
+  
   await Firebase.initializeApp(
     options: const FirebaseOptions(
       apiKey: "AIzaSyDEnb3e5mC2pNtZg5vClW9K_4FKdtqyx0Y",
@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: AppRoute.register,
-          page: () => SignUpView(),
+          page: () => const SignUpView(),
           binding: SignUpBindings(),
         ),
         GetPage(
@@ -100,7 +100,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: AppRoute.splash,
-          page: () => SplashScreen(),
+          page: () => const SplashScreen(),
           binding: SplashBindings(),
         ),
         GetPage(
@@ -109,24 +109,25 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: AppRoute.track,
-          page: () => TrackCoursesView(),
+          page: () => const TrackCoursesView(),
         ),
         GetPage(
           name: AppRoute.tracksContent,
           page: () => const TracksContentView(),
         ),
-        GetPage(
-          name: AppRoute.demoOffline,
-          page: () => const HomeOfflineView(),
-        ),
+      
         GetPage(
           name: AppRoute.notifications,
           page: () => const NotificationsView(),
         ),
-        // GetPage(
-        //   name: AppRoute.videoContent,
-        //   page: () => TrackAllVideosPage(),
-        // ),
+        GetPage(
+          name: AppRoute.videoContent,
+          page: () => const TrackAllVideosPage(),
+        ),
+        GetPage(
+          name: AppRoute.companies,
+          page: () => CompaniesView(),
+        ),
       ],
     );
   }

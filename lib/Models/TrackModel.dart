@@ -1,19 +1,19 @@
 import 'package:xpertexams/Models/CourseModel.dart';
 
 class Track {
-  final int id;
+  final int? id;
   final String name;
   final List<Course> courses;
 
   Track({
-    required this.id,
+    this.id,
     required this.name,
     this.courses = const [],
   });
 
   factory Track.fromJson(Map<String, dynamic> json) {
     return Track(
-      id: json['id'] ?? 0,
+      id: json['id'] != null ? int.tryParse(json['id'].toString()) : null,
       name: json['name'] ?? '',
       courses: (json['courses'] as List?)?.map((e) => Course.fromJson(e)).toList() ?? [],
     );

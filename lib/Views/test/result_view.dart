@@ -70,7 +70,6 @@ class _ResultViewState extends State<ResultView> with TickerProviderStateMixin {
     final courseTitle = args["courseTitle"] ?? "Unknown Course";
     final Map<int, String> selectedAnswers = (args["selectedAnswers"] ?? {}) as Map<int, String>;
     final List<Question> questions = args["questions"] ?? [];
-    final timeSpent = args["timeSpent"] ?? 0;
 
     if (token.isEmpty || questions.isEmpty) return;
 
@@ -91,7 +90,6 @@ class _ResultViewState extends State<ResultView> with TickerProviderStateMixin {
         data: {
           "courseTitle": courseTitle,
           "answers": answers,
-          "timeSpent": timeSpent,
         },
       );
 
@@ -126,7 +124,6 @@ class _ResultViewState extends State<ResultView> with TickerProviderStateMixin {
     final percentage = args["percentage"] ?? 0;
     final autoSubmit = args["autoSubmit"] ?? false;
     final courseTitle = args["courseTitle"] ?? "Unknown Course";
-    final timeSpent = args["timeSpent"] ?? 0;
     final List<Question> questions = args["questions"] ?? [];
     final Map<int, String> selectedAnswers = (args["selectedAnswers"] ?? {}) as Map<int, String>;
 
@@ -153,7 +150,7 @@ class _ResultViewState extends State<ResultView> with TickerProviderStateMixin {
                   physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
-                      _buildScoreSection(score, total, percentage, timeSpent),
+                      _buildScoreSection(score, total, percentage),
                       _buildSubmissionStatus(),
                       _buildQuestionsReview(questions, selectedAnswers),
                       _buildActionButtons(),
@@ -179,19 +176,7 @@ class _ResultViewState extends State<ResultView> with TickerProviderStateMixin {
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: Icon(
-                  autoSubmit ? Icons.timer_off_rounded : Icons.celebration_rounded,
-                  size: 48,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 16),
+             
               Text(
                 autoSubmit ? "Time's Up!" : "Exam Completed!",
                 style: const TextStyle(
@@ -224,7 +209,7 @@ class _ResultViewState extends State<ResultView> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildScoreSection(int score, int total, int percentage, int timeSpent) {
+  Widget _buildScoreSection(int score, int total, int percentage) {
     return SlideTransition(
       position: _slideAnimation,
       child: FadeTransition(
@@ -294,8 +279,6 @@ class _ResultViewState extends State<ResultView> with TickerProviderStateMixin {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         _buildStatItem("Score", "$score/$total", Icons.quiz_rounded),
-                        _buildStatDivider(),
-                        _buildStatItem("Time", _formatTime(timeSpent), Icons.access_time_rounded),
                         _buildStatDivider(),
                         _buildStatItem("Accuracy", "${((score/total)*100).toInt()}%", Icons.check_circle_rounded),
                       ],
@@ -676,11 +659,7 @@ class _ResultViewState extends State<ResultView> with TickerProviderStateMixin {
     );
   }
 
-  String _formatTime(int seconds) {
-    final minutes = seconds ~/ 60;
-    final remainingSeconds = seconds % 60;
-    return "${minutes}m ${remainingSeconds}s";
-  }
+ 
 
   String _getGradeText(int percentage) {
     if (percentage >= 90) return "A+";

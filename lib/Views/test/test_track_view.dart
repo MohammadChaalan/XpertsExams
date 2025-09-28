@@ -149,7 +149,7 @@ class _TracksContentViewState extends State<TracksContentView> {
           );
         },
       ),
-      bottomNavigationBar: CustomBottomBarPage(),
+      bottomNavigationBar: CustomBottomBarPage(initialIndex: 3,),
     );
   }
 

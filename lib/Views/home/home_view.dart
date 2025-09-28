@@ -141,7 +141,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           ),
         ],
       ),
-      bottomNavigationBar: const CustomBottomBarPage(),
+      bottomNavigationBar: const CustomBottomBarPage(initialIndex: 0,),
     );
   }
 

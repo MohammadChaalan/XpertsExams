@@ -43,11 +43,12 @@ class SignUpController {
     };
 
     try {
-      final response = await DioClient().getInstance().post("/signup", data: body);
+      final response =
+          await DioClient().getInstance().post("/signup", data: body);
       debugPrint("Signup Response: ${response.data}");
       // Navigate to offline demo immediately after signup
-      Get.offNamed(AppRoute.demoOffline);
-   
+      Get.offNamed(AppRoute.home);
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("✅ ${response.data['message']}")),
       );
