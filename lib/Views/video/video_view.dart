@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:xpertexams/Controllers/Auth/SignIn/SignInController.dart';
 import 'package:xpertexams/Controllers/Course/CourseController.dart';
 import 'package:xpertexams/Core/BottomBar/ButtomBar.dart';
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
 import 'package:xpertexams/Models/VideoModel.dart';
 import 'package:xpertexams/Routes/AppRoute.dart';
 import 'package:xpertexams/Views/tracks/video_player_view.dart';
@@ -277,10 +278,10 @@ void _showUserMenu() {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CircleAvatar(
+               CircleAvatar(
                 radius: 40,
-                backgroundColor: Colors.green,
-                child: Icon(Icons.person, size: 50, color: Colors.white),
+                backgroundColor: TColor.primary,
+                child: const Icon(Icons.person, size: 50, color: Colors.white),
               ),
               const SizedBox(height: 12),
               Text(name,
@@ -635,10 +636,10 @@ void _showUserMenu() {
     return Scaffold(
       backgroundColor: Colors.grey[50],
         appBar: AppBar(
-            title: Text("All Videos" , style: TextStyle(color: Colors.green , fontWeight: FontWeight.bold),),
+            title: Text("All Videos" , style: TextStyle(color: TColor.textSecondaryAppbar , fontWeight: FontWeight.bold),),
             centerTitle: true,
             leading: IconButton(
-              icon: const Icon(Icons.menu, color: Colors.green),
+              icon:  Icon(Icons.menu, color: TColor.primary),
               onPressed: () {
                 _showUserMenu();
               },

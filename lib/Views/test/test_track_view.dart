@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xpertexams/Controllers/Auth/SignIn/SignInController.dart';
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
 import 'package:xpertexams/Models/TrackModel.dart';
 import 'package:xpertexams/Core/BottomBar/ButtomBar.dart';
+import 'package:xpertexams/Routes/AppRoute.dart';
 import 'package:xpertexams/Views/test/TestCourseSelection_view.dart';
 import 'package:xpertexams/Views/test/test_view.dart';
 import 'package:xpertexams/Views/tracks/track_view.dart';
@@ -19,12 +21,15 @@ class _TracksContentViewState extends State<TracksContentView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Learning Tracks"),
-        backgroundColor: Colors.green[400],
-        foregroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-      ),
+            title:  Text("learning Tracks" , style: TextStyle(color: TColor.textSecondaryAppbar , fontWeight: FontWeight.bold),),
+            centerTitle: true,
+            leading: IconButton(
+              icon:  Icon(Icons.menu, color: TColor.primary),
+              onPressed: () {
+                _showUserMenu(context);
+              },
+            ),
+          ),
       body: GetBuilder<SignInController>(
         init: Get.find<SignInController>(),
         builder: (signInController) {
@@ -152,7 +157,64 @@ class _TracksContentViewState extends State<TracksContentView> {
       bottomNavigationBar: CustomBottomBarPage(initialIndex: 3,),
     );
   }
+void _showUserMenu(BuildContext context) {
+    final signInController = Get.find<SignInController>();
+    final user = signInController.user.value; // <- your logged-in user
+    final name = user?.name ?? "Guest User";
+    final email = user?.email ?? "guest@example.com";
 
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+               CircleAvatar(
+                radius: 40,
+                backgroundColor: TColor.primary,
+                child: const Icon(Icons.person, size: 50, color: Colors.white),
+              ),
+              const SizedBox(height: 12),
+              Text(name,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 4),
+              Text(email, style: const TextStyle(color: Colors.grey)),
+              const SizedBox(height: 24),
+              ListTile(
+                leading: const Icon(Icons.logout, color: Colors.red),
+                title: const Text("Logout",
+                    style: TextStyle(color: Colors.red)),
+                onTap: () async {
+                  Navigator.pop(context);
+
+                  // Call logout logic from controller
+                  await signInController.logout();
+
+                  Get.snackbar(
+                    "Logged Out",
+                    "You have successfully logged out",
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white,
+                  );
+
+                  // Navigate back to login screen
+                  Get.offAllNamed(AppRoute.login);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
   Widget _buildTrackCard(Track track, BuildContext context) {
     // Calculate track statistics
     final totalCourses = track.courses.length;

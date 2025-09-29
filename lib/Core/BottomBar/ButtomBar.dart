@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
 import 'package:xpertexams/Routes/AppRoute.dart';
 
 class CustomBottomBarPage extends StatefulWidget {
@@ -74,14 +75,14 @@ class _CustomBottomBarPageState extends State<CustomBottomBarPage>
                 children: [
                   Icon(
                     item.icon,
-                    color: isSelected ? Colors.green : Colors.grey,
+                    color: isSelected ? TColor.primary : Colors.grey,
                     size: isSelected ? 30 : 26,
                   ),
                   const SizedBox(height: 4),
                   Text(
                     item.label,
                     style: TextStyle(
-                      color: isSelected ? Colors.green : Colors.grey,
+                      color: isSelected ? TColor.primary : Colors.grey,
                       fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                       fontSize: 12,
                     ),

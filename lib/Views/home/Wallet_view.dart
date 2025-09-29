@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
 
 class WalletView extends StatefulWidget {
   const WalletView({super.key});
@@ -41,7 +42,7 @@ class _WalletViewState extends State<WalletView> {
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: Colors.green[400],
+              color: TColor.primary,
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
@@ -111,8 +112,8 @@ class _WalletViewState extends State<WalletView> {
                         children: [
                           Text(
                             t['title'],
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600),
+                            style:  TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600 , color: TColor.text),
                           ),
                           const SizedBox(height: 4),
                           Text(

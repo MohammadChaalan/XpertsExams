@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xpertexams/Controllers/Auth/SignIn/SignInController.dart';
 import 'package:xpertexams/Controllers/Test/TestController.dart';
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
 import 'package:xpertexams/Models/TrackModel.dart';
 import 'package:xpertexams/Routes/AppRoute.dart';
 
@@ -85,13 +86,13 @@ class _CourseSelectionViewState extends State<CourseSelectionView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.track.name , style: const TextStyle(color: Colors.white),),
+        title: Text(widget.track.name , style:  TextStyle(color: TColor.textPrimaryAppbar),),
         centerTitle: true,
         elevation: 0,
-        foregroundColor: Colors.white,
+        foregroundColor: TColor.textPrimaryAppbar,
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            color: Colors.green,
+          decoration:  BoxDecoration(
+            color: TColor.primary,
           ),
         ),
       ),
@@ -144,8 +145,8 @@ class _CourseSelectionViewState extends State<CourseSelectionView> {
                         "${signInController.getQuestionsByCourse(course.title).length} questions",
                         style: const TextStyle(color: Colors.grey),
                       ),
-                      trailing: const Icon(Icons.arrow_forward_ios,
-                          color: Colors.green),
+                      trailing:  Icon(Icons.arrow_forward_ios,
+                          color: TColor.primary),
                     ),
                   ),
                 );

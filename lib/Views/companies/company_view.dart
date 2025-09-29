@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xpertexams/Controllers/Auth/SignIn/SignInController.dart';
 import 'package:xpertexams/Core/BottomBar/ButtomBar.dart';
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
 import 'package:xpertexams/Routes/AppRoute.dart';
 import 'company_details_view.dart';
 
@@ -34,10 +35,10 @@ class CompaniesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-            title: const Text("Companies" , style: TextStyle(color: Colors.green , fontWeight: FontWeight.bold),),
+            title:  Text("Companies" , style: TextStyle(color: TColor.textSecondaryAppbar , fontWeight: FontWeight.bold),),
             centerTitle: true,
             leading: IconButton(
-              icon: const Icon(Icons.menu, color: Colors.green),
+              icon:  Icon(Icons.menu, color: TColor.primary),
               onPressed: () {
                 _showUserMenu(context);
               },
@@ -73,10 +74,10 @@ void _showUserMenu(BuildContext context) {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CircleAvatar(
+               CircleAvatar(
                 radius: 40,
-                backgroundColor: Colors.green,
-                child: Icon(Icons.person, size: 50, color: Colors.white),
+                backgroundColor: TColor.primary,
+                child: const Icon(Icons.person, size: 50, color: Colors.white),
               ),
               const SizedBox(height: 12),
               Text(name,
@@ -119,7 +120,7 @@ void _showUserMenu(BuildContext context) {
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 3,
-      shadowColor: Colors.green.withOpacity(0.2),
+      shadowColor: TColor.primary.withOpacity(0.2),
       child: ListTile(
         contentPadding: const EdgeInsets.all(16),
         title: Text(company['name']!, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),

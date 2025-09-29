@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xpertexams/Controllers/Auth/SignIn/SignInController.dart';
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
 import 'package:xpertexams/Routes/AppRoute.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -24,7 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return AppBar(
       elevation: 4,
-      backgroundColor: Colors.green[400],
+      backgroundColor: TColor.primary,
       toolbarHeight: 80,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -105,9 +106,9 @@ void _showUserMenu(BuildContext context, SignInController signInController) {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const CircleAvatar(
+             CircleAvatar(
               radius: 40,
-              backgroundColor: Colors.green,
+              backgroundColor: TColor.primary,
               child: Icon(Icons.person, size: 50, color: Colors.white),
             ),
             const SizedBox(height: 12),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xpertexams/Controllers/Auth/SignUp/SignUpController.dart';
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
 import 'package:xpertexams/Routes/AppRoute.dart';
 
 class SignUpView extends StatefulWidget {
@@ -34,7 +35,7 @@ class _SignUpViewState extends State<SignUpView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green[400],
+      backgroundColor: TColor.primary,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
@@ -42,21 +43,21 @@ class _SignUpViewState extends State<SignUpView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                const Icon(
+                 Icon(
                   Icons.person_add_alt_1,
                   size: 100,
-                  color: Colors.white,
+                  color: TColor.secondary,
                 ),
-                const Text(
+                 Text(
                   'Create Account',
                   style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                      color: TColor.secondary),
                 ),
-                const Text(
+                 Text(
                   'Sign up to get started',
-                  style: TextStyle(fontSize: 15, color: Colors.white),
+                  style: TextStyle(fontSize: 15, color: TColor.secondary),
                 ),
                 const SizedBox(height: 20),
                 Card(
@@ -77,7 +78,7 @@ class _SignUpViewState extends State<SignUpView> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               prefixIcon:
-                                  Icon(Icons.person, color: Colors.green[400])),
+                                  Icon(Icons.person, color: TColor.primary)),
                         ),
                         const SizedBox(height: 15),
                         TextField(
@@ -89,7 +90,7 @@ class _SignUpViewState extends State<SignUpView> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               prefixIcon: Icon(Icons.email_outlined,
-                                  color: Colors.green[400])),
+                                  color: TColor.primary)),
                         ),
                         const SizedBox(height: 15),
                         TextField(
@@ -101,7 +102,7 @@ class _SignUpViewState extends State<SignUpView> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               prefixIcon:
-                                  Icon(Icons.phone, color: Colors.green[400])),
+                                  Icon(Icons.phone, color: TColor.primary)),
                         ),
                         const SizedBox(height: 15),
                         TextField(
@@ -113,7 +114,7 @@ class _SignUpViewState extends State<SignUpView> {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             prefixIcon: Icon(Icons.lock_outline,
-                                color: Colors.green[400]),
+                                color: TColor.primary),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 controller.isPasswordVisible
@@ -139,7 +140,7 @@ class _SignUpViewState extends State<SignUpView> {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             prefixIcon: Icon(Icons.lock_outline,
-                                color: Colors.green[400]),
+                                color: TColor.primary),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 controller.isConfirmPasswordVisible
@@ -171,7 +172,7 @@ class _SignUpViewState extends State<SignUpView> {
                                 return CheckboxListTile(
                                   title: Text(track['name']),
                                   subtitle: Text(track['description']),
-                                  activeColor: Colors.green[400],
+                                  activeColor: TColor.primary,
                                   value: selectedTrackIds.contains(track['id']),
                                   onChanged: (value) {
                                     setState(() {
@@ -192,8 +193,8 @@ class _SignUpViewState extends State<SignUpView> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green[300],
-                              foregroundColor: Colors.white,
+                              backgroundColor: TColor.button,
+                              foregroundColor: TColor.textButton,
                             ),
                             onPressed: () =>
                                 controller.signup(selectedTrackIds, context),
@@ -205,8 +206,8 @@ class _SignUpViewState extends State<SignUpView> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              foregroundColor: Colors.green[300],
+                              backgroundColor: TColor.button2,
+                              foregroundColor: TColor.textButton2,
                               side: BorderSide(
                                   color: Colors.green[300]!, width: 1.5),
                             ),

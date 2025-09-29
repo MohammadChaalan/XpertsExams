@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xpertexams/Core/Network/DioClient.dart';
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
 import 'package:xpertexams/Models/CourseModel.dart';
 import 'package:xpertexams/Models/TrackModel.dart';
 import 'package:xpertexams/Models/VideoModel.dart';
@@ -325,7 +326,7 @@ class _TrackCoursesViewState extends State<TrackCoursesView>
       backgroundColor: Colors.transparent,
       flexibleSpace: Container(
         decoration: BoxDecoration(
-          color: Colors.green[400],
+          color: TColor.primary,
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(30),
             bottomRight: Radius.circular(30),
@@ -334,10 +335,10 @@ class _TrackCoursesViewState extends State<TrackCoursesView>
         child: FlexibleSpaceBar(
           title: Text(
             widget.track?.name ?? "Track",
-            style: const TextStyle(
-              color: Colors.white,
+            style:  TextStyle(
+              color: TColor.textPrimaryAppbar,
               fontWeight: FontWeight.bold,
-              shadows: [
+              shadows: const [
                 Shadow(
                   offset: Offset(0, 1),
                   blurRadius: 3,
@@ -366,8 +367,8 @@ class _TrackCoursesViewState extends State<TrackCoursesView>
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: progress.isComplete
-                  ? [Colors.green[300]!, Colors.green[500]!]
-                  : [Colors.blue[300]!, Colors.purple[400]!],
+                  ? [TColor.completedone, TColor.completedtwo]
+                  : [TColor.incompletedone, TColor.incompletedtwo],
             ),
           ),
           child: Column(
@@ -481,8 +482,8 @@ class _TrackCoursesViewState extends State<TrackCoursesView>
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: progress.isComplete
-                    ? [Colors.green[400]!, Colors.green[600]!]
-                    : [Colors.blue[400]!, Colors.indigo[500]!],
+                    ? [TColor.completedone, TColor.completedtwo]
+                    : [TColor.incompletedone, TColor.incompletedtwo],
               ),
               borderRadius: BorderRadius.circular(12),
             ),
@@ -547,8 +548,8 @@ class _TrackCoursesViewState extends State<TrackCoursesView>
                       "${progress.percentageString}% Complete",
                       style: TextStyle(
                         color: progress.isComplete
-                            ? Colors.green[700]
-                            : Colors.blue[700],
+                            ? TColor.completedtwo
+                            : TColor.incompletedtwo,
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                       ),
@@ -585,7 +586,7 @@ class _TrackCoursesViewState extends State<TrackCoursesView>
         color: video.isCompleted ? Colors.green[50] : Colors.blue[50],
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: video.isCompleted ? Colors.green[200]! : Colors.blue[200]!,
+          color: video.isCompleted ? TColor.completedone : TColor.incompletedone,
           width: 1,
         ),
       ),
@@ -597,8 +598,8 @@ class _TrackCoursesViewState extends State<TrackCoursesView>
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: video.isCompleted
-                  ? [Colors.green[400]!, Colors.green[600]!]
-                  : [Colors.blue[400]!, Colors.indigo[500]!],
+                  ? [TColor.completedone, TColor.completedtwo]
+                  : [TColor.incompletedone, TColor.incompletedtwo],
             ),
             borderRadius: BorderRadius.circular(10),
           ),
@@ -619,8 +620,7 @@ class _TrackCoursesViewState extends State<TrackCoursesView>
               child: Text(
                 "${index + 1}",
                 style: TextStyle(
-                  color:
-                      video.isCompleted ? Colors.green[700] : Colors.blue[700],
+                  color: video.isCompleted ? TColor.completedtwo : TColor.incompletedtwo,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
@@ -661,7 +661,7 @@ class _TrackCoursesViewState extends State<TrackCoursesView>
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
-                    color: Colors.green[600],
+                    color: TColor.completedtwo,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Text(
@@ -680,13 +680,13 @@ class _TrackCoursesViewState extends State<TrackCoursesView>
         trailing: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: video.isCompleted ? Colors.green[100] : Colors.blue[100],
+            color: video.isCompleted ? TColor.completedone : TColor.incompletedone,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Icon(
+          child: const Icon(
             Icons.arrow_forward_ios,
             size: 16,
-            color: video.isCompleted ? Colors.green[600] : Colors.blue[600],
+            color:  Colors.white,
           ),
         ),
         onTap: () => _handleVideoTap(video, course),
@@ -704,7 +704,7 @@ class _TrackCoursesViewState extends State<TrackCoursesView>
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.green[400]!, Colors.green[200]!],
+            colors: [TColor.primary, Colors.white],
           ),
         ),
         child: const Center(
@@ -772,8 +772,8 @@ class _TrackCoursesViewState extends State<TrackCoursesView>
             ElevatedButton.icon(
               onPressed: _initializeView,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green[600],
-                foregroundColor: Colors.white,
+                backgroundColor: TColor.button,
+                foregroundColor: TColor.textButton,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 shape: RoundedRectangleBorder(
@@ -821,7 +821,7 @@ class _TrackCoursesViewState extends State<TrackCoursesView>
             Expanded(child: Text(message)),
           ],
         ),
-        backgroundColor: Colors.green[600],
+        backgroundColor: TColor.primary,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         margin: const EdgeInsets.all(16),

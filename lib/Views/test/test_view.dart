@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xpertexams/Controllers/Test/TestController.dart';
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
 
 class TestView extends StatefulWidget {
   const TestView({super.key });
@@ -96,8 +97,8 @@ void _onTimeUp() {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Test"),
-        backgroundColor: Colors.green,
-        foregroundColor: Colors.white,
+        backgroundColor: TColor.primary,
+        foregroundColor: TColor.textPrimaryAppbar,
       ),
       body: Column(
         children: [

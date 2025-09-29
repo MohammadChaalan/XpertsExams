@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xpertexams/Controllers/Auth/SignIn/SignInController.dart';
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
 import 'package:xpertexams/Routes/AppRoute.dart';
 
 class SignInView extends GetView<SignInController> {
@@ -8,7 +9,7 @@ class SignInView extends GetView<SignInController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green[400],
+      backgroundColor: TColor.primary,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 90, horizontal: 20),
@@ -16,25 +17,25 @@ class SignInView extends GetView<SignInController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                const Icon(
+                 Icon(
                   Icons.account_circle,
                   size: 100,
-                  color: Colors.white,
+                  color: TColor.secondary,
                 ),
-                const Text(
+                 Text(
                   'Welcome Back',
                   style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                      color: TColor.secondary),
                 ),
-                const Text(
+                 Text(
                   'Sign in to your account',
-                  style: TextStyle(fontSize: 15, color: Colors.white),
+                  style: TextStyle(fontSize: 15, color: TColor.secondary),
                 ),
                 const SizedBox(height: 20),
                 Card(
-                  color: Colors.white,
+                  color: TColor.secondary,
                   elevation: 4,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25),
@@ -51,7 +52,7 @@ class SignInView extends GetView<SignInController> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               prefixIcon: Icon(Icons.email_outlined,
-                                  color: Colors.green[400])),
+                                  color: TColor.primary)),
                           keyboardType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 15),
@@ -64,7 +65,7 @@ class SignInView extends GetView<SignInController> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               prefixIcon: Icon(Icons.lock_outline,
-                                  color: Colors.green[400])),
+                                  color: TColor.primary)),
                         ),
                         const SizedBox(height: 20),
                         Obx(() => controller.isChecked.value
@@ -144,8 +145,8 @@ class SignInView extends GetView<SignInController> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green[300],
-                              foregroundColor: Colors.white,
+                              backgroundColor: TColor.button,
+                              foregroundColor: TColor.textButton,
                             ),
                             onPressed: () {
                               // Handle sign in logic
@@ -159,8 +160,8 @@ class SignInView extends GetView<SignInController> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              foregroundColor: Colors.green[300],
+                              backgroundColor: TColor.button2,
+                              foregroundColor: TColor.textButton2,
                               side: BorderSide(
                                   color: Colors.green[300]!, width: 1.5),
                             ),

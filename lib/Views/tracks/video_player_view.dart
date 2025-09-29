@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
 import 'package:xpertexams/Routes/AppRoute.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -338,11 +339,11 @@ class _VideoContentPageState extends State<VideoContentPage> {
 
   /// Build dialog title
   Widget _buildDialogTitle() {
-    return const Row(
+    return  Row(
       children: [
-        Icon(Icons.check_circle, color: Colors.green, size: 28),
-        SizedBox(width: 8),
-        Text('Mark as Completed?'),
+        Icon(Icons.check_circle, color: TColor.primary , size: 28),
+        const SizedBox(width: 8),
+        const Text('Mark as Completed?'),
       ],
     );
   }
@@ -376,13 +377,13 @@ class _VideoContentPageState extends State<VideoContentPage> {
             children: [
               Row(
                 children: [
-                  Icon(Icons.timer, size: 16, color: Colors.green[700]),
+                  Icon(Icons.timer, size: 16, color: TColor.primary),
                   const SizedBox(width: 4),
                   Text(
                     'Watch Progress: ${(_watchProgress * 100).toInt()}%',
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      color: Colors.green[700],
+                      color: TColor.primary,
                     ),
                   ),
                 ],
@@ -391,7 +392,7 @@ class _VideoContentPageState extends State<VideoContentPage> {
               LinearProgressIndicator(
                 value: _watchProgress,
                 backgroundColor: Colors.green[100],
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.green[600]!),
+                valueColor: AlwaysStoppedAnimation<Color>(TColor.primary),
               ),
             ],
           ),
@@ -445,8 +446,8 @@ class _VideoContentPageState extends State<VideoContentPage> {
           _handleVideoCompletion(autoCompleted: false);
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
-          foregroundColor: Colors.white,
+          backgroundColor: TColor.button,
+          foregroundColor: TColor.textButton,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
         child: const Text('Mark Completed'),
@@ -462,7 +463,7 @@ class _VideoContentPageState extends State<VideoContentPage> {
           ? "Video automatically marked as completed!"
           : "You have marked this video as completed!",
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green,
+      backgroundColor: TColor.primary,
       colorText: Colors.white,
       duration: const Duration(seconds: 3),
       margin: const EdgeInsets.all(16),
@@ -536,13 +537,13 @@ class _VideoContentPageState extends State<VideoContentPage> {
   Widget _buildLoadingScaffold() {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: const Center(
+      body:  Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(color: Colors.green),
-            SizedBox(height: 16),
-            Text("Loading video..."),
+            CircularProgressIndicator(color: TColor.primary),
+            const SizedBox(height: 16),
+            const Text("Loading video..."),
           ],
         ),
       ),
@@ -699,7 +700,7 @@ class _VideoContentPageState extends State<VideoContentPage> {
           icon: const Icon(Icons.check_circle_outline),
           label: const Text("Mark as Completed"),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
+            backgroundColor: TColor.completedone,
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 16),
             shape: RoundedRectangleBorder(

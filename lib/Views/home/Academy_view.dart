@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:printing/printing.dart';
 import 'package:xpertexams/Controllers/Auth/SignIn/SignInController.dart';
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
 import 'package:xpertexams/Models/TrackModel.dart';
 import 'package:xpertexams/Views/tracks/track_view.dart';
 import 'package:xpertexams/Views/widgets/certificate_service.dart';
@@ -20,7 +21,7 @@ class _AcademyViewState extends State<AcademyView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: TColor.secondary,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
@@ -55,11 +56,11 @@ class _AcademyViewState extends State<AcademyView> {
   Widget _buildSectionTitle(IconData icon, String title) {
     return Row(
       children: [
-        Icon(icon, color: Colors.green, size: 22),
+        Icon(icon, color: TColor.primary, size: 22),
         const SizedBox(width: 8),
         Text(
           title,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style:  TextStyle(color: TColor.title, fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ],
     );
@@ -105,14 +106,10 @@ class _AcademyViewState extends State<AcademyView> {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          gradient: LinearGradient(
-            colors: [Colors.green.shade200, Colors.green.shade400],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          color: TColor.primary,
           boxShadow: [
             BoxShadow(
-              color: Colors.green.withOpacity(0.3),
+              color: TColor.primary.withOpacity(0.3),
               blurRadius: 10,
               offset: const Offset(0, 6),
             ),
@@ -125,21 +122,21 @@ class _AcademyViewState extends State<AcademyView> {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.4),
+                color: TColor.secondary.withOpacity(0.4),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: const Icon(Icons.play_lesson, color: Colors.white),
             ),
             const SizedBox(height: 12),
             Text(track.name,
-                style: const TextStyle(
+                style:  TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white)),
+                    color: TColor.secondary)),
             const SizedBox(height: 8),
-            const Text(
+             Text(
               "Complete all lessons",
-              style: TextStyle(fontSize: 12, color: Colors.white70),
+              style: TextStyle(fontSize: 12, color: TColor.secondary),
             ),
           ],
         ),
@@ -220,8 +217,8 @@ class _AcademyViewState extends State<AcademyView> {
           ),
         ],
       ),
-      child: Column(
-        children: const [
+      child: const Column(
+        children:  [
           Icon(Icons.calendar_today_rounded, size: 50, color: Colors.grey),
           SizedBox(height: 15),
           Text(
@@ -282,7 +279,7 @@ class _AcademyViewState extends State<AcademyView> {
       margin: const EdgeInsets.symmetric(vertical: 6),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 3,
-      shadowColor: Colors.green.withOpacity(0.3),
+      shadowColor: TColor.primary.withOpacity(0.3),
       child: ListTile(
         leading: leading,
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -290,7 +287,7 @@ class _AcademyViewState extends State<AcademyView> {
         trailing: ElevatedButton(
           onPressed: onTrailingPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
+            backgroundColor: TColor.primary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),

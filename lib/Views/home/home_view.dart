@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:xpertexams/Core/AppBar/HomeAppBar.dart';
 import 'package:xpertexams/Core/BottomBar/ButtomBar.dart';
 import 'package:xpertexams/Controllers/Auth/SignIn/SignInController.dart';
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
 import 'package:xpertexams/Routes/AppRoute.dart';
 import 'package:xpertexams/Views/home/Academy_view.dart';
 import 'package:xpertexams/Views/home/Jobs_view.dart';
@@ -21,11 +22,11 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
 
   final SignInController signInController = Get.find<SignInController>();
 
-  final List<TabData> tabs = const [
-    TabData(title: "Academy", icon: Icons.school, color: Colors.green),
+  final List<TabData> tabs =  [
+    TabData(title: "Academy", icon: Icons.school, color: TColor.primary),
     TabData(
-        title: "Wallet", icon: Icons.account_balance_wallet, color: Colors.green),
-    TabData(title: "Jobs", icon: Icons.work, color: Colors.green),
+        title: "Wallet", icon: Icons.account_balance_wallet, color: TColor.primary),
+    TabData(title: "Jobs", icon: Icons.work, color: TColor.primary),
   ];
 
   @override
@@ -71,9 +72,9 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CircleAvatar(
+               CircleAvatar(
                 radius: 40,
-                backgroundColor: Colors.green,
+                backgroundColor: TColor.primary,
                 child: Icon(Icons.person, size: 50, color: Colors.white),
               ),
               const SizedBox(height: 12),

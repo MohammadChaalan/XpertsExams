@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
+
 class NotificationModel {
   final String id;
   final String title;
@@ -292,9 +294,9 @@ class _NotificationsViewState extends State<NotificationsView> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: const Text('Notifications'),
-        backgroundColor: Colors.green[600],
-        foregroundColor: Colors.white,
+        title:  Text('Notifications'),
+        backgroundColor: TColor.primary,
+        foregroundColor: TColor.textPrimaryAppbar,
         elevation: 0,
         actions: [
           if (notifications.isNotEmpty) ...[
@@ -315,7 +317,10 @@ class _NotificationsViewState extends State<NotificationsView> {
           ? const Center(child: CircularProgressIndicator())
           : notifications.isEmpty
               ? _buildEmptyState()
-              : _buildNotificationsList(),
+              : Padding(
+                padding: const EdgeInsets.all(10),
+                child: _buildNotificationsList(),
+              ),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xpertexams/Core/common_colors/color_extension.dart';
 
 class CompanyDetailsView extends StatelessWidget {
   final Map<String, String> company;
@@ -10,7 +11,7 @@ class CompanyDetailsView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(company['name']!),
-        backgroundColor: Colors.green,
+        backgroundColor: TColor.primary,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -26,7 +27,7 @@ class CompanyDetailsView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.green.withOpacity(0.1),
+                    color: TColor.primary.withOpacity(0.1),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -37,7 +38,7 @@ class CompanyDetailsView extends StatelessWidget {
                 children: [
                   Text(company['name']!, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  Text(company['industry']!, style: const TextStyle(fontSize: 16, color: Colors.green)),
+                  Text(company['industry']!, style:  TextStyle(fontSize: 16, color: TColor.primary)),
                   const SizedBox(height: 4),
                   Text(company['location']!, style: const TextStyle(fontSize: 14, color: Colors.grey)),
                 ],
@@ -58,7 +59,7 @@ class CompanyDetailsView extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
+                  backgroundColor: TColor.primary,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
